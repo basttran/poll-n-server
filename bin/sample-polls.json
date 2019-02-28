@@ -1,14 +1,12 @@
 [
   {
-    "name": "brexit",
-    "subject": "Are you in favor or against Brexit?",
-    "image": "https://www.lepoint.fr/images/2019/02/25/18159651lpw-18159666-article-brexit-jpg_5994924_660x281.jpg",
-    "votes": []
+    "shortText": "brexit",
+    "longText": "Are you in favor or against Brexit?",
+    "image": "https://www.lepoint.fr/images/2019/02/25/18159651lpw-18159666-article-brexit-jpg_5994924_660x281.jpg"
   },
   {
-    "name": "gilets-jaunes",
-    "subject": "Are you in favor or against the 'Gilets Jaunes' movement?",
-    "image": "https://o.aolcdn.com/images/dims3/GLOB/crop/5568x2784+0+213/resize/630x315!/format/jpg/quality/85/https%3A%2F%2Fmedia-mbst-pub-ue1.s3.amazonaws.com%2Fcreatr-images%2F2019-02%2F67ec31e0-36af-11e9-bfef-1af00a7bc575",
-    "votes": []
+    "shortText": "gilets-jaunes",
+    "longText": "Are you in favor or against the 'Gilets Jaunes' movement?",
+    "image": "https://o.aolcdn.com/images/dims3/GLOB/crop/5568x2784+0+213/resize/630x315!/format/jpg/quality/85/https%3A%2F%2Fmedia-mbst-pub-ue1.s3.amazonaws.com%2Fcreatr-images%2F2019-02%2F67ec31e0-36af-11e9-bfef-1af00a7bc575"
   }
 ]

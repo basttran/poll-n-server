@@ -20,8 +20,10 @@ const userSchema = new Schema(
       enum: ["normal", "admin"],
       default: "normal"
     },
-    votedPolls: [{ type: ObjectId, ref: "VotePoll", required: true }],
-    votedArgs: [{ type: ObjectId, ref: "VoteArg", required: true }]
+    votedPolls: [
+      { type: Schema.Types.ObjectId, ref: "VotePoll", required: true }
+    ],
+    votedArgs: [{ type: Schema.Types.ObjectId, ref: "VoteArg", required: true }]
   },
   {
     // additional settings for the Schema class defined here

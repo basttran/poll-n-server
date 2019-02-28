@@ -8,7 +8,6 @@ router.get("/polls", (req, res, next) => {
   Poll.find()
     .sort({ createdAt: -1 })
     .limit(5)
-    .populate(votePolls)
     .then(pollFindResults => res.json(pollFindResults))
     .catch(err => next(err));
 });
