@@ -4,10 +4,11 @@ const Schema = mongoose.Schema;
 
 const pollSchema = new Schema(
   {
-    name: { type: String, required: true, minlength: 2 },
-    subject: { type: String, required: true, minlength: 10 },
-    image: { type: String, required: true, match: /^https?:\/\// },
-    votes: { type: Array }
+    shortText: { type: String, required: true, minlength: 8 },
+    longText: { type: String, required: true, minlength: 12, maxlength: 250 },
+    image: { type: String, match: /^https?:\/\// },
+    votePolls: [{ type: ObjectId, ref: "VotePoll" }],
+    arguments: [{ type: ObjectId, ref: "Argument" }]
   },
   { timestamp: true }
 );

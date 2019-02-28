@@ -56,7 +56,6 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
-// Routes
 const poll = require("./routes/poll-router.js");
 // all routes in the phone router will start with "/api"
 app.use("/api", poll);
