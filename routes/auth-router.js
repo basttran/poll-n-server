@@ -22,9 +22,6 @@ router.post("/process-signup", (req, res, next) => {
     originalUsercode
   } = req.body;
 
-  // encrypt the usercode (NIR), first to check if already exists in DB, then to save it as encrypted if not
-  const encryptedUsercode = bcrypt.hashSync(originalUsercode, 10);
-
   // check if username already exists in DB
   User.findOne({ username: { $eq: username } })
     .then(userDoc => {
@@ -33,16 +30,18 @@ router.post("/process-signup", (req, res, next) => {
       }
 
       // check if usercode already exists by searching the database
-      return User.findOne({ encryptedUsercode: { $eq: encryptedUsercode } });
+      return User.find();
     })
-    .then(userDoc => {
-      if (userDoc) {
-        specialErrorHandler(
-          res,
-          "usercodeExists",
-          "Social Security Number already registered."
-        );
-      }
+    .then(userArray => {
+      userArray.forEach(userDoc => {
+        if (bcrypt.compareSync(originalUsercode, userDoc.encryptedUsercode)) {
+          specialErrorHandler(
+            res,
+            "usercodeExists",
+            "Social Security Number already registered."
+          );
+        }
+      });
 
       // enforce password rules (can't be empty and MUST have a digit)
       if (!originalPassword || !originalPassword.match(/[0-9]/)) {
@@ -62,7 +61,8 @@ router.post("/process-signup", (req, res, next) => {
         );
       }
 
-      // encrypt the user's password and email too before saving it
+      // encrypt the user's usercode, password and email too before saving it
+      const encryptedUsercode = bcrypt.hashSync(originalUsercode, 10);
       const encryptedPassword = bcrypt.hashSync(originalPassword, 10);
       const encryptedEmail = bcrypt.hashSync(originalEmail, 10);
 
