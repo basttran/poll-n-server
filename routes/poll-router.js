@@ -4,7 +4,6 @@ const Poll = require("../models/poll-model.js");
 
 const router = express.Router();
 
-
 // Browse polls
 router.get("/polls", (req, res, next) => {
   Poll.find()
@@ -21,7 +20,6 @@ router.get("/polls/:pollId", (req, res, next) => {
     .then(pollDoc => res.json(pollDoc))
     .catch(err => next(err));
 });
-
 
 // Add Poll
 router.post("/polls", (req, res, next) => {

@@ -10,8 +10,7 @@ const userSchema = new Schema(
     encryptedEmail: {
       type: String,
       required: true,
-      unique: true,
-      match: /^.+@.+\..+$/
+      unique: true
     },
     encryptedUsercode: { type: String, required: true },
     role: {
