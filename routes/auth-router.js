@@ -52,14 +52,14 @@ router.post("/process-signup", (req, res, next) => {
         );
       }
 
-      // enforce usercode rules (*** french social security number, also called "NIR", see above for guidelines ***)
-      if (!originalUsercode || !isSocialSecurity(originalUsercode)) {
-        specialErrorHandler(
-          res,
-          "usercodeNotValid",
-          "Social Security Number is invalid."
-        );
-      }
+      // // enforce usercode rules (*** french social security number, also called "NIR", see above for guidelines ***)
+      // if (!originalUsercode || !isSocialSecurity(originalUsercode)) {
+      //   specialErrorHandler(
+      //     res,
+      //     "usercodeNotValid",
+      //     "Social Security Number is invalid."
+      //   );
+      // }
 
       // encrypt the user's usercode, password and email too before saving it
       const encryptedUsercode = bcrypt.hashSync(originalUsercode, 10);

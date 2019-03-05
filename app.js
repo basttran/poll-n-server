@@ -63,7 +63,4 @@ app.use("/api", poll);
 const auth = require("./routes/auth-router.js");
 app.use("/api", auth);
 
-const argument = require("./routes/argument-router.js");
-app.use("/api", argument);
-
 module.exports = app;

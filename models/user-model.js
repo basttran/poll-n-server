@@ -4,33 +4,27 @@ const Schema = mongoose.Schema;
 
 const userSchema = new Schema(
   {
-    // document structure & rules defined here
     username: { type: String, required: true, minlength: 3 },
     encryptedPassword: { type: String, required: true },
     encryptedEmail: {
       type: String,
-      required: true,
       unique: true
     },
-    encryptedUsercode: { type: String, required: true },
+    encryptedUsercode: { type: String },
     role: {
       type: String,
       required: true,
-      enum: ["normal", "admin"],
+      enum: ["normal", "verified", "admin"],
       default: "normal"
     },
-    votedPolls: [
-      { type: Schema.Types.ObjectId, ref: "VotePoll", required: true }
-    ],
-    votedArgs: [{ type: Schema.Types.ObjectId, ref: "VoteArg", required: true }]
+    votes: [{ type: Schema.Types.ObjectId, ref: "Vote" }],
+    tags: []
   },
   {
-    // additional settings for the Schema class defined here
     timestamps: true
   }
 );
 
-// "User" model -> "users" collection
 const User = mongoose.model("User", userSchema);
 
 module.exports = User;
