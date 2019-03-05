@@ -5,7 +5,7 @@ const Argument = require("../models/argument-model.js");
 const router = express.Router();
 
 // Browse arguments
-router.get("/polls/:pollId/add-argument", (req, res, next) => {
+router.get("/arguments/:pollId/add-argument", (req, res, next) => {
   Argument.find()
     .sort({ createdAt: -1 })
     .limit(5)
@@ -22,9 +22,12 @@ router.get("/arguments/:argumentId", (req, res, next) => {
 });
 
 // Add Argument
-router.post("/arguments", (req, res, next) => {
+router.post("/arguments/:pollId/add-argument", (req, res, next) => {
+  const { pollId } = req.params;
+  const inPolls = pollId;
+  console.log(inPolls);
   const { shortText, longText, ref } = req.body;
-  Argument.create({ shortText, longText, ref })
+  Argument.create({ shortText, longText, ref, inPolls })
     .then(argumentDoc => res.json(argumentDoc))
     .catch(err => next(err));
 });
