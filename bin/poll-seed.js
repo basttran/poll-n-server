@@ -4,7 +4,7 @@ const Poll = require("../models/poll-model.js");
 const samplePolls = require("./sample-polls.json");
 
 mongoose
-  .connect("mongodb://localhost/poll-n", {
+  .connect(process.env.MONGODB_URI, {
     useNewUrlParser: true
   })
   .then(x => {

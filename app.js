@@ -12,7 +12,7 @@ const MongoStore = require("connect-mongo")(session);
 const passport = require("passport");
 
 mongoose
-  .connect("mongodb://localhost/poll-n", { useNewUrlParser: true })
+  .connect(process.env.MONGODB_URI, { useNewUrlParser: true })
   .then(x => {
     console.log(
       `Connected to Mongo! Database name: "${x.connections[0].name}"`
@@ -38,6 +38,7 @@ app.use(
     // receive cookies from other domains/origins
     credentials: true,
     // only these domains/origins can access the API
+    // change domain if CLIENT and SERVER are on two different domains
     origin: ["http://localhost:3000"]
   })
 );
