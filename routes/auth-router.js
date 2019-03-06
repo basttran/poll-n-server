@@ -19,8 +19,13 @@ router.post("/process-signup", (req, res, next) => {
     username,
     originalPassword,
     originalEmail,
-    originalUsercode
+    originalUsercode,
+    tags
   } = req.body;
+  console.log("TAGS");
+
+  const tagArray = tags.split(" ");
+  console.log("TAGARRAY", tagArray);
 
   // check if username already exists in DB
   User.findOne({ username: { $eq: username } })
@@ -70,7 +75,8 @@ router.post("/process-signup", (req, res, next) => {
         username,
         encryptedPassword,
         encryptedEmail,
-        encryptedUsercode
+        encryptedUsercode,
+        tags: tagArray
       });
     })
     .then(userDoc => {
