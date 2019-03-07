@@ -1,9 +1,7 @@
 const express = require("express");
 const bcrypt = require("bcrypt");
-
 const User = require("../models/user-model.js");
 const isSocialSecurity = require("../lib/is-social-security.js");
-
 const router = express.Router();
 
 function specialErrorHandler(res, type, message) {
@@ -22,10 +20,9 @@ router.post("/process-signup", (req, res, next) => {
     originalUsercode,
     tags
   } = req.body;
-  console.log("TAGS");
 
   const tagArray = tags.split(" ");
-  console.log("TAGARRAY", tagArray);
+  const role = "normal";
 
   // check if username already exists in DB
   User.findOne({ username: { $eq: username } })
@@ -57,14 +54,18 @@ router.post("/process-signup", (req, res, next) => {
         );
       }
 
-      // // enforce usercode rules (*** french social security number, also called "NIR", see above for guidelines ***)
-      // if (!originalUsercode || !isSocialSecurity(originalUsercode)) {
-      //   specialErrorHandler(
-      //     res,
-      //     "usercodeNotValid",
-      //     "Social Security Number is invalid."
-      //   );
-      // }
+      // enforce usercode rules (*** french social security number, also called "NIR", see above for guidelines ***)
+      if (!originalUsercode) {
+        continue;
+      } else if (!isSocialSecurity(originalUsercode)) {
+        specialErrorHandler(
+          res,
+          "usercodeNotValid",
+          "Social Security Number is invalid."
+        );
+      } else if (isSocialSecurity(originalUsercode)) {
+        role="certified";
+      }
 
       // encrypt the user's usercode, password and email too before saving it
       const encryptedUsercode = bcrypt.hashSync(originalUsercode, 10);
@@ -76,7 +77,9 @@ router.post("/process-signup", (req, res, next) => {
         encryptedPassword,
         encryptedEmail,
         encryptedUsercode,
-        tags: tagArray
+        tags: tagArray,
+        role,
+        votes: []
       });
     })
     .then(userDoc => {

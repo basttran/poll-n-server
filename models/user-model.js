@@ -14,7 +14,7 @@ const userSchema = new Schema(
     role: {
       type: String,
       required: true,
-      enum: ["normal", "verified", "admin"],
+      enum: ["normal", "certified", "admin"],
       default: "normal"
     },
     votes: [{ type: Schema.Types.ObjectId, ref: "Vote" }],

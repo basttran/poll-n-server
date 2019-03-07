@@ -1,10 +1,12 @@
 [
   {
     "title": "brexit",
-    "description": "Are you in favor or against Brexit?"
+    "description": "Are you in favor or against Brexit?",
+    "votes": []
   },
   {
     "title": "gilets-jaunes",
-    "description": "Are you in favor or against the 'Gilets Jaunes' movement?"
+    "description": "Are you in favor or against the 'Gilets Jaunes' movement?",
+    "votes": []
   }
 ]

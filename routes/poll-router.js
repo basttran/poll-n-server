@@ -1,8 +1,7 @@
 const express = require("express");
+const router = express.Router();
 const User = require("../models/user-model.js");
 const Poll = require("../models/poll-model.js");
-
-const router = express.Router();
 
 // Popular Polls
 router.get("/polls", (req, res, next) => {
