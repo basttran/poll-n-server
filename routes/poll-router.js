@@ -11,6 +11,37 @@ router.get("/polls", (req, res, next) => {
     .catch(err => next(err));
 });
 
+// Polls Created By User
+router.get("/polls-created", (req, res, next) => {
+  const { userId } = req.query;
+
+  Poll.find({ createdBy: { $eq: userId } })
+    .sort({ createdAt: -1 })
+    .then(pollFindResults => res.json(pollFindResults))
+    .catch(err => next(err));
+});
+
+// Polls Voted By User
+router.get("/polls-voted", (req, res, next) => {
+  const { userId } = req.query;
+
+  User.findById(userId)
+
+    .then(userDoc => {
+      let resultArray = [];
+
+      userDoc.votes.forEach(vote => {
+        Poll.findbyId(vote.pollId)
+          .then(poll => resultArray.push(poll))
+          .catch(err => next(err));
+      });
+
+      res.json(resultArray);
+    })
+
+    .catch(err => next(err));
+});
+
 // Poll Details
 router.get("/polls/:pollId", (req, res, next) => {
   const { pollId } = req.params;
@@ -60,8 +91,9 @@ router.get("/next-poll", (req, res, next) => {
 // Add Poll
 router.post("/polls", (req, res, next) => {
   console.log(req.body);
-  const { shortText, longText, image } = req.body;
-  Poll.create({ shortText, longText, image })
+  const { title, description, currentUser } = req.body;
+  const votes = [];
+  Poll.create({ title, description, votes, createdBy: currentUser._id })
     .then(pollDoc => res.json(pollDoc))
     .catch(err => next(err));
 });
