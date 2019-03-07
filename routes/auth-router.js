@@ -55,16 +55,14 @@ router.post("/process-signup", (req, res, next) => {
       }
 
       // enforce usercode rules (*** french social security number, also called "NIR", see above for guidelines ***)
-      if (!originalUsercode) {
-        continue;
-      } else if (!isSocialSecurity(originalUsercode)) {
+      if (originalUsercode && !isSocialSecurity(originalUsercode)) {
         specialErrorHandler(
           res,
           "usercodeNotValid",
           "Social Security Number is invalid."
         );
-      } else if (isSocialSecurity(originalUsercode)) {
-        role="certified";
+      } else if (originalUsercode && isSocialSecurity(originalUsercode)) {
+        role = "certified";
       }
 
       // encrypt the user's usercode, password and email too before saving it
