@@ -88,6 +88,8 @@ router.get("/next-poll", (req, res, next) => {
     .catch(err => next(err));
 });
 
+
+
 // Add Poll
 router.post("/polls", (req, res, next) => {
   console.log(req.body);
@@ -97,5 +99,39 @@ router.post("/polls", (req, res, next) => {
     .then(pollDoc => res.json(pollDoc))
     .catch(err => next(err));
 });
+
+
+
+
+// New Poll
+router.get("/new-poll", (req, res, next) => {
+  console.log("COUCOU", req.query);
+  const {currentUser} = req.body;
+  console.log("USER", currentUser);
+  const votesArray = currentUser.votes;
+  console.log("VOTES", votesArray);
+  Poll.findOne({ poll_id : {$nin : [votesArray]} })
+    .then(pollDoc => res.json(pollDoc))
+    .catch(err => next(err))
+});
+
+
+
+// Vote Poll
+router.post("/vote-poll", (req, res, next) => {
+  console.log(req.body);
+  const { currentUser, pollItem, voteValue } = req.body;
+  // we push the vote value to the Poll's vote array (not the UserId !!!)
+  Poll.findByIdAndUpdate(pollItem._id, 
+    { $push: { "votes" : voteValue } })
+    .then(
+      User.findByIdAndUpdate(currentUser._id, 
+        { $push: { "votes" : pollItem._id } })
+        .then(userDoc => res.json(userDoc))
+    )
+    .catch(err => next(err));
+   // however we push the Poll's id to the User votes (voted polls) array
+  });
+
 
 module.exports = router;
