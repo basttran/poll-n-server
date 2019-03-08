@@ -105,12 +105,14 @@ router.post("/polls", (req, res, next) => {
 
 // New Poll
 router.get("/new-poll", (req, res, next) => {
-  console.log("COUCOU", req.query);
-  const {currentUser} = req.body;
-  console.log("USER", currentUser);
-  const votesArray = currentUser.votes;
-  console.log("VOTES", votesArray);
-  Poll.findOne({ poll_id : {$nin : [votesArray]} })
+  // console.log("COUCOU", req.query);
+  // const {currentUser} = req.body;
+  // console.log("USER", currentUser);
+  // const votesArray = currentUser.votes;
+  // console.log("VOTES", votesArray);
+  Poll.findOne(
+    // { _id : {$nin : [votesArray]} }
+    )
     .then(pollDoc => res.json(pollDoc))
     .catch(err => next(err))
 });
