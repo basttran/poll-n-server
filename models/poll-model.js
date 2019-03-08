@@ -6,7 +6,7 @@ const pollSchema = new Schema(
   {
     title: { type: String, required: true, minlength: 2 },
     description: { type: String, required: true, minlength: 3, maxlength: 250 },
-    votes: [{ type: Number, ref: "Vote" }], // formerly 'type: Schema.Types.ObjectId'
+    votes: [{ type: Schema.Types.ObjectId, ref: "Vote" }],
     createdBy: { type: Schema.Types.ObjectId, ref: "User" }
   },
   { timestamp: true }

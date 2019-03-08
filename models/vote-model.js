@@ -11,6 +11,6 @@ const voteSchema = new Schema(
   { timestamp: true }
 );
 
-const Vote = mongoose.model("Vote", votePollSchema);
+const Vote = mongoose.model("Vote", voteSchema);
 
 module.exports = Vote;
