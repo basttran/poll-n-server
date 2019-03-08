@@ -76,12 +76,21 @@ router.get("/next-poll", (req, res, next) => {
       let pollIdsAlreadyVoted = voteArray.map(voteItem =>
         voteItem.pollId.toString()
       );
+      console.log(pollIdsAlreadyVoted);
 
       Poll.find()
         .sort({ createdAt: -1 })
         .then(pollArray => {
           let foundPoll = 0;
           let counter = 0;
+
+          console.log("pollArray[counter]._id", pollArray[counter]._id);
+          console.log(typeof pollArray[counter]._id);
+
+          console.log("pollIdArray[0]", pollIdArray[0]);
+          console.log(typeof pollIdsAlreadyVoted[0]);
+
+          console.log(pollIdsAlreadyVoted.includes(pollArray[counter]._id));
 
           while (foundPoll === 0 && counter < pollArray.length) {
             if (
