@@ -35,15 +35,15 @@ router.post("/process-signup", (req, res, next) => {
       return User.find();
     })
     .then(userArray => {
-      userArray.forEach(userDoc => {
-        if (bcrypt.compareSync(originalUsercode, userDoc.encryptedUsercode)) {
-          specialErrorHandler(
-            res,
-            "usercodeExists",
-            "Social Security Number already registered."
-          );
-        }
-      });
+      // userArray.forEach(userDoc => {
+      //   if (bcrypt.compareSync(originalUsercode, userDoc.encryptedUsercode)) {
+      //     specialErrorHandler(
+      //       res,
+      //       "usercodeExists",
+      //       "Social Security Number already registered."
+      //     );
+      //   }
+      // });
 
       // enforce password rules (can't be empty and MUST have a digit)
       if (!originalPassword || !originalPassword.match(/[0-9]/)) {
