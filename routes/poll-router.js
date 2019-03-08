@@ -106,12 +106,12 @@ router.post("/polls", (req, res, next) => {
 // New Poll
 router.get("/new-poll", (req, res, next) => {
   // console.log("COUCOU", req.query);
-  // const {currentUser} = req.body;
+  const {currentUser} = req.body;
   // console.log("USER", currentUser);
   // const votesArray = currentUser.votes;
   // console.log("VOTES", votesArray);
   Poll.findOne(
-    // { _id : {$nin : [votesArray]} }
+    { _id : {$nin : [currentUser.votesArray]} }
     )
     .then(pollDoc => res.json(pollDoc))
     .catch(err => next(err))
@@ -121,7 +121,7 @@ router.get("/new-poll", (req, res, next) => {
 
 // Vote Poll
 router.post("/vote-poll", (req, res, next) => {
-  console.log(req.body);
+  console.log("VOTE POLL", req.body);
   const { currentUser, pollItem, voteValue } = req.body;
   // we push the vote value to the Poll's vote array (not the UserId !!!)
   Poll.findByIdAndUpdate(pollItem._id, 
