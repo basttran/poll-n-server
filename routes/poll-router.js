@@ -84,14 +84,6 @@ router.get("/next-poll", (req, res, next) => {
           let foundPoll = 0;
           let counter = 0;
 
-          // console.log("pollArray[counter]._id", pollArray[counter]._id);
-          // console.log(typeof pollArray[counter]._id);
-
-          // console.log("pollIdArray[0]", pollIdArray[0]);
-          // console.log(typeof pollIdsAlreadyVoted[0]);
-
-          // console.log(pollIdsAlreadyVoted.includes(pollArray[counter]._id));
-
           while (foundPoll === 0 && counter < pollArray.length) {
             if (
               !pollIdsAlreadyVoted.includes(pollArray[counter]._id.toString())
@@ -185,35 +177,49 @@ router.post("/polls", (req, res, next) => {
     .catch(err => next(err));
 });
 
-// Vote Poll
-router.post("/vote-poll", (req, res, next) => {
-  console.log("VOTE POLL", req.body);
+// Swipe Poll
+router.post("/swipe-poll", (req, res, next) => {
+  console.log("SWIPE POLL", req.body);
   const { currentUser, pollItem, voteValue } = req.body;
-
-  Vote.create({
-    userId: currentUser._id,
-    pollId: pollItem._id,
-    value: voteValue
-  })
-    .then(voteDoc => {
-      // console.log("vote-poll => VOTEDOC", voteDoc);
-
-      User.findByIdAndUpdate(voteDoc.userId, { $push: { votes: voteDoc._id } })
+  console.log("SWIPE POLL", currentUser._id);
+  User.findByIdAndUpdate(currentUser._id, { $push: { votes: pollItem._id } })
         .then(userDoc => {
-          // console.log("vote-poll => USERDOC", userDoc);
-
-          Poll.findByIdAndUpdate(voteDoc.pollId, {
-            $push: { votes: voteDoc._id }
+          console.log("vote-poll => USERDOC", userDoc);
+          Poll.findByIdAndUpdate(pollItem._id, {
+            $push: { votes: voteValue }
           })
-            .then(pollDoc => {
-              // console.log("vote-poll => POLLDOC", pollDoc);
-              res.json(pollDoc);
-            })
+            .then(() => {
+              console.log("vote-poll => POLLDOC", pollDoc);
+              Poll.findOne(
+                { _id : {$nin : userDoc.votes} }
+                )
+                .then(pollDoc => res.json(pollDoc))
+                .catch(err => next(err))
+              })
             .catch(err => next(err));
         })
         .catch(err => next(err));
-    })
-    .catch(err => next(err));
+
+  
+});
+
+
+
+
+
+
+// New Poll
+router.post("/new-poll", (req, res, next) => {
+  console.log("COUCOU", req.query);
+  const {currentUser} = req.body;
+  console.log("USER", currentUser);
+  const votesArray = currentUser.votes;
+  console.log("VOTES", votesArray);
+  Poll.findOne(
+    { _id : {$nin : [votesArray]} }
+    )
+    .then(pollDoc => res.json(pollDoc))
+    .catch(err => next(err))
 });
 
 // Get Counts (Yes, No, Skip, etc.)
