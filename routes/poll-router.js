@@ -183,43 +183,32 @@ router.post("/swipe-poll", (req, res, next) => {
   const { currentUser, pollItem, voteValue } = req.body;
   console.log("SWIPE POLL", currentUser._id);
   User.findByIdAndUpdate(currentUser._id, { $push: { votes: pollItem._id } })
-        .then(userDoc => {
-          console.log("vote-poll => USERDOC", userDoc);
-          Poll.findByIdAndUpdate(pollItem._id, {
-            $push: { votes: voteValue }
-          })
-            .then(() => {
-              console.log("vote-poll => POLLDOC", pollDoc);
-              Poll.findOne(
-                { _id : {$nin : userDoc.votes} }
-                )
-                .then(pollDoc => res.json(pollDoc))
-                .catch(err => next(err))
-              })
+    .then(userDoc => {
+      console.log("vote-poll => USERDOC", userDoc); // I DO get this console.log
+      Poll.findByIdAndUpdate(pollItem._id, {
+        $push: { votes: voteValue }
+      })
+        .then(pollDoc => {
+          console.log("vote-poll => POLLDOC", pollDoc); // I NEVER get this console.log
+          Poll.findOne({ _id: { $nin: userDoc.votes } })
+            .then(pollDoc => res.json(pollDoc))
             .catch(err => next(err));
         })
         .catch(err => next(err));
-
-  
+    })
+    .catch(err => next(err));
 });
-
-
-
-
-
 
 // New Poll
 router.post("/new-poll", (req, res, next) => {
   console.log("COUCOU", req.query);
-  const {currentUser} = req.body;
+  const { currentUser } = req.body;
   console.log("USER", currentUser);
   const votesArray = currentUser.votes;
   console.log("VOTES", votesArray);
-  Poll.findOne(
-    { _id : {$nin : [votesArray]} }
-    )
+  Poll.findOne({ _id: { $nin: [votesArray] } })
     .then(pollDoc => res.json(pollDoc))
-    .catch(err => next(err))
+    .catch(err => next(err));
 });
 
 // Get Counts (Yes, No, Skip, etc.)
