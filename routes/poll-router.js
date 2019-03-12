@@ -182,7 +182,7 @@ router.post("/swipe-poll", (req, res, next) => {
   console.log("SWIPE POLL", req.body);
   const { currentUser, pollItem, voteValue } = req.body;
   console.log("SWIPE POLL", currentUser._id);
-  User.findByIdAndUpdate(currentUser._id, { $push: { votes: pollItem._id } })
+  User.findByIdAndUpdate(currentUser._id, { $push: { votes: pollItem._id }}, { new: true })
     .then(userDoc => {
       console.log("vote-poll => USERDOC", userDoc); // I DO get this console.log
       Poll.findByIdAndUpdate(pollItem._id, {
